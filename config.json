@@ -1,0 +1,7 @@
+{
+  "GCLOUD_PROJECT": "stm-management-db",
+  "DATA_BACKEND": "cloudsql",
+  "MYSQL_USER": "root",
+  "MYSQL_PASSWORD": "tracysell",
+  "MYSQL_HOST": "104.197.192.209"
+}
