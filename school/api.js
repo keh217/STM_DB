@@ -26,6 +26,10 @@ var router = express.Router();
 // Automatically parse request body as JSON
 router.use(bodyParser.json());
 
+router.get('/', function hello (req, res, next) {
+  res.send("Welcome to our API");
+});
+
 /**
  * GET /api/students
  *
@@ -58,48 +62,6 @@ router.get('/students/:student', function get (req, res, next) {
       return next(err);
     }
     res.json(entity);
-  });
-});
-
-/**
- * GET /api/books/:id
- *
- * Retrieve a book.
- */
-router.get('/:book', function get (req, res, next) {
-  getModel().read(req.params.book, function (err, entity) {
-    if (err) {
-      return next(err);
-    }
-    res.json(entity);
-  });
-});
-
-/**
- * PUT /api/books/:id
- *
- * Update a book.
- */
-router.put('/:book', function update (req, res, next) {
-  getModel().update(req.params.book, req.body, function (err, entity) {
-    if (err) {
-      return next(err);
-    }
-    res.json(entity);
-  });
-});
-
-/**
- * DELETE /api/books/:id
- *
- * Delete a book.
- */
-router.delete('/:book', function _delete (req, res, next) {
-  getModel().delete(req.params.book, function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.status(200).send('OK');
   });
 });
 
