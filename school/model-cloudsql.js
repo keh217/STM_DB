@@ -27,8 +27,77 @@ function getConnection () {
   }));
 }
 
+// [START listbehavior]
+function listbehavior (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `behavior` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+
 // [START list]
-function list (limit, token, cb) {
+function listclass (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `class` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+// [START list_staff]
+function listdescription (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `description` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+// [START list_staff]
+function liststaff (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `staff` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+// [START list]
+function liststudents (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
   var connection = getConnection();
   connection.query(
@@ -43,7 +112,71 @@ function list (limit, token, cb) {
   );
   connection.end();
 }
-// [END list]
+
+function listtakes (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `takes` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+function listteaches (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `teaches` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+function listtest (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `test` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+function listtook (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `took` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
 
 function read (id, cb) {
   var connection = getConnection();
@@ -63,7 +196,61 @@ function read (id, cb) {
   connection.end();
 }
 
+<<<<<<< HEAD
 module.exports = {
   list: list,
+=======
+function readstaff (id, cb) {
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `staff` WHERE `id` = ?', id, function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      if (!results.length) {
+        return cb({
+          code: 404,
+          message: 'Not found'
+        });
+      }
+      cb(null, results[0]);
+    });
+  connection.end();
+}
+
+// [START update]
+function update (id, data, cb) {
+  var connection = getConnection();
+  connection.query(
+    'UPDATE `books` SET ? WHERE `id` = ?', [data, id], function (err) {
+      if (err) {
+        return cb(err);
+      }
+      read(id, cb);
+    });
+  connection.end();
+}
+// [END update]
+
+function _delete (id, cb) {
+  var connection = getConnection();
+  connection.query('DELETE FROM `books` WHERE `id` = ?', id, cb);
+  connection.end();
+}
+
+module.exports = {
+  createSchema: createSchema,
+  listbehavior: listbehavior,
+  listclass: listclass,
+  listdescription: listdescription,
+  liststaff: liststaff,
+  liststudents: liststudents,
+  listtakes: listtakes,
+  listteaches: listteaches,
+  listtest: listtest,
+  listtook: listtook,
+  
+  create: create,
+>>>>>>> erik_branch
   read: read,
 };
