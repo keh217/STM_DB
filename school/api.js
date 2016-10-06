@@ -27,6 +27,7 @@ var router = express.Router();
 router.use(bodyParser.json());
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 router.get('/', function hello (req, res, next) {
   res.send("Welcome to our API");
 });
@@ -37,6 +38,8 @@ router.get('/', function hello (req, res, next) {
  * Retrieve a page of books (up to ten at a time).
  */
 =======
+=======
+>>>>>>> erik_branch
 
 router.get('/behavior', function list (req, res, next) {
   getModel().listbehavior(10, req.query.pageToken, function (err, entities, cursor) {
@@ -87,6 +90,9 @@ router.get('/staff', function list (req, res, next) {
     });
 
 
+<<<<<<< HEAD
+>>>>>>> erik_branch
+=======
 >>>>>>> erik_branch
 router.get('/students', function list (req, res, next) {
   getModel().liststudents(10, req.query.pageToken, function (err, entities, cursor) {
@@ -102,6 +108,8 @@ router.get('/students', function list (req, res, next) {
 
 router.get('/takes', function list (req, res, next) {
   getModel().listtakes(10, req.query.pageToken, function (err, entities, cursor) {
+<<<<<<< HEAD
+=======
     if (err) {
       return next(err);
     }
@@ -114,6 +122,7 @@ router.get('/takes', function list (req, res, next) {
 
 router.get('/teaches', function list (req, res, next) {
   getModel().listteaches(10, req.query.pageToken, function (err, entities, cursor) {
+>>>>>>> erik_branch
     if (err) {
       return next(err);
     }
@@ -124,6 +133,21 @@ router.get('/teaches', function list (req, res, next) {
   });
 });
 
+<<<<<<< HEAD
+router.get('/teaches', function list (req, res, next) {
+  getModel().listteaches(10, req.query.pageToken, function (err, entities, cursor) {
+    if (err) {
+      return next(err);
+    }
+    res.json({
+      students: entities,
+      nextPageToken: cursor
+    });
+  });
+});
+
+=======
+>>>>>>> erik_branch
 router.get('/test', function list (req, res, next) {
   getModel().listtest(10, req.query.pageToken, function (err, entities, cursor) {
     if (err) {
@@ -165,7 +189,10 @@ router.get('/students/:student', function get (req, res, next) {
 
 /**
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> erik_branch
  * POST students:student. get specific student
  */
 router.get('/students/:student', function get (req, res, next) {

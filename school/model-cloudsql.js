@@ -45,6 +45,7 @@ function listbehavior (limit, token, cb) {
 }
 
 
+<<<<<<< HEAD
 // [START list]
 function listclass (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
@@ -97,6 +98,60 @@ function liststaff (limit, token, cb) {
 }
 
 // [START list]
+=======
+// [START list]
+function listclass (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `class` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+// [START list_staff]
+function listdescription (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `description` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+// [START list_staff]
+function liststaff (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `staff` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+// [START list]
+>>>>>>> erik_branch
 function liststudents (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
   var connection = getConnection();
@@ -112,6 +167,74 @@ function liststudents (limit, token, cb) {
   );
   connection.end();
 }
+<<<<<<< HEAD
+=======
+
+function listtakes (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `takes` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+function listteaches (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `teaches` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+function listtest (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `test` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+function listtook (limit, token, cb) {
+  token = token ? parseInt(token, 10) : 0;
+  var connection = getConnection();
+  connection.query(
+    'SELECT * FROM `took` LIMIT ? OFFSET ?', [limit, token],
+    function (err, results) {
+      if (err) {
+        return cb(err);
+      }
+      var hasMore = results.length === limit ? token + results.length : false;
+      cb(null, results, hasMore);
+    }
+  );
+  connection.end();
+}
+
+>>>>>>> erik_branch
 
 function listtakes (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
@@ -197,9 +320,12 @@ function read (id, cb) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 module.exports = {
   list: list,
 =======
+=======
+>>>>>>> erik_branch
 function readstaff (id, cb) {
   var connection = getConnection();
   connection.query(
