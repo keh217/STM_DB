@@ -45,19 +45,6 @@ function list (limit, token, cb) {
 }
 // [END list]
 
-// [START create]
-function create (data, cb) {
-  var connection = getConnection();
-  connection.query('INSERT INTO `books` SET ?', data, function (err, res) {
-    if (err) {
-      return cb(err);
-    }
-    read(res.insertId, cb);
-  });
-  connection.end();
-}
-// [END create]
-
 function read (id, cb) {
   var connection = getConnection();
   connection.query(
@@ -76,76 +63,7 @@ function read (id, cb) {
   connection.end();
 }
 
-// [START update]
-function update (id, data, cb) {
-  var connection = getConnection();
-  connection.query(
-    'UPDATE `books` SET ? WHERE `id` = ?', [data, id], function (err) {
-      if (err) {
-        return cb(err);
-      }
-      read(id, cb);
-    });
-  connection.end();
-}
-// [END update]
-
-function _delete (id, cb) {
-  var connection = getConnection();
-  connection.query('DELETE FROM `books` WHERE `id` = ?', id, cb);
-  connection.end();
-}
-
 module.exports = {
-  createSchema: createSchema,
   list: list,
-  create: create,
   read: read,
-  update: update,
-  delete: _delete
 };
-
-if (module === require.main) {
-  var prompt = require('prompt');
-  prompt.start();
-
-  console.log(
-    'Running this script directly will allow you to initialize your mysql ' +
-    'database.\n This script will not modify any existing tables.\n');
-
-  prompt.get(['host', 'user', 'password'], function (err, result) {
-    if (err) {
-      return;
-    }
-    createSchema(result);
-  });
-}
-
-function createSchema (config) {
-  var connection = mysql.createConnection(extend({
-    multipleStatements: true
-  }, config));
-
-  connection.query(
-    'CREATE DATABASE IF NOT EXISTS `library` DEFAULT CHARACTER SET = ' +
-    '\'utf8\' DEFAULT COLLATE \'utf8_general_ci\'; ' +
-    'USE `library`; ' +
-    'CREATE TABLE IF NOT EXISTS `library`.`books` ( ' +
-    '`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, ' +
-    '`title` VARCHAR(255) NULL, ' +
-    '`author` VARCHAR(255) NULL, ' +
-    '`publishedDate` VARCHAR(255) NULL, ' +
-    '`imageUrl` VARCHAR(255) NULL, ' +
-    '`description` TEXT NULL, ' +
-    '`createdBy` VARCHAR(255) NULL, ' +
-    '`createdById` VARCHAR(255) NULL, ' +
-    'PRIMARY KEY (`id`));',
-    function (err) {
-      if (err) {
-        throw err;
-      }
-      console.log('Successfully created schema');
-      connection.end();
-    }
-  );
-}
