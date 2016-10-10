@@ -26,17 +26,35 @@ var router = express.Router();
 // Automatically parse request body as JSON
 router.use(bodyParser.json());
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+router.get('/', function hello (req, res, next) {
+  res.send("Welcome to our API");
+});
+
 /**
  * GET /api/students
  *
  * Retrieve a page of books (up to ten at a time).
  */
-router.get('/students', function list (req, res, next) {
-  //res.json({
-  //  id: 1,
-  //  name: "Arnold Schwarzenegger"
-  //});
-  getModel().list(10, req.query.pageToken, function (err, entities, cursor) {
+=======
+=======
+>>>>>>> erik_branch
+
+router.get('/behavior', function list (req, res, next) {
+  getModel().listbehavior(10, req.query.pageToken, function (err, entities, cursor) {
+    if (err) {
+        return next(err);
+    }
+    res.json({
+      staff: entities,
+          nextPageToken: cursor
+          });
+      });
+    });
+
+router.get('/class', function list (req, res, next) {
+  getModel().listclass(10, req.query.pageToken, function (err, entities, cursor) {
     if (err) {
       return next(err);
     }
@@ -46,6 +64,114 @@ router.get('/students', function list (req, res, next) {
     });
   });
 });
+
+router.get('/description', function list (req, res, next) {
+  getModel().listdescription(10, req.query.pageToken, function (err, entities, cursor) {
+    if (err) {
+        return next(err);
+    }
+    res.json({
+      staff: entities,
+          nextPageToken: cursor
+          });
+      });
+    });
+
+router.get('/staff', function list (req, res, next) {
+  getModel().liststaff(10, req.query.pageToken, function (err, entities, cursor) {
+    if (err) {
+        return next(err);
+    }
+    res.json({
+      staff: entities,
+          nextPageToken: cursor
+          });
+      });
+    });
+
+
+<<<<<<< HEAD
+>>>>>>> erik_branch
+=======
+>>>>>>> erik_branch
+router.get('/students', function list (req, res, next) {
+  getModel().liststudents(10, req.query.pageToken, function (err, entities, cursor) {
+    if (err) {
+      return next(err);
+    }
+    res.json({
+      students: entities,
+      nextPageToken: cursor
+    });
+  });
+});
+
+router.get('/takes', function list (req, res, next) {
+  getModel().listtakes(10, req.query.pageToken, function (err, entities, cursor) {
+<<<<<<< HEAD
+=======
+    if (err) {
+      return next(err);
+    }
+    res.json({
+      students: entities,
+      nextPageToken: cursor
+    });
+  });
+});
+
+router.get('/teaches', function list (req, res, next) {
+  getModel().listteaches(10, req.query.pageToken, function (err, entities, cursor) {
+>>>>>>> erik_branch
+    if (err) {
+      return next(err);
+    }
+    res.json({
+      students: entities,
+      nextPageToken: cursor
+    });
+  });
+});
+
+<<<<<<< HEAD
+router.get('/teaches', function list (req, res, next) {
+  getModel().listteaches(10, req.query.pageToken, function (err, entities, cursor) {
+    if (err) {
+      return next(err);
+    }
+    res.json({
+      students: entities,
+      nextPageToken: cursor
+    });
+  });
+});
+
+=======
+>>>>>>> erik_branch
+router.get('/test', function list (req, res, next) {
+  getModel().listtest(10, req.query.pageToken, function (err, entities, cursor) {
+    if (err) {
+      return next(err);
+    }
+    res.json({
+      students: entities,
+      nextPageToken: cursor
+    });
+  });
+});
+
+router.get('/took', function list (req, res, next) {
+  getModel().listtook(10, req.query.pageToken, function (err, entities, cursor) {
+    if (err) {
+      return next(err);
+    }
+    res.json({
+      students: entities,
+      nextPageToken: cursor
+    });
+  });
+});
+
 
 /**
  * POST /api/books
@@ -60,6 +186,24 @@ router.get('/students/:student', function get (req, res, next) {
     res.json(entity);
   });
 });
+
+/**
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> erik_branch
+ * POST students:student. get specific student
+ */
+router.get('/students/:student', function get (req, res, next) {
+  getModel().readstaff(req.params.student, function (err, entity) {
+    if (err) {
+      return next(err);
+    }
+    res.json(entity);
+  });
+});
+
 
 /**
  * GET /api/books/:id
@@ -104,6 +248,7 @@ router.delete('/:book', function _delete (req, res, next) {
 });
 
 /**
+>>>>>>> erik_branch
  * Errors on "/api/books/*" routes.
  */
 router.use(function handleRpcError (err, req, res, next) {
