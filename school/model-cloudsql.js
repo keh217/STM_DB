@@ -45,7 +45,6 @@ function listbehavior (limit, token, cb) {
 }
 
 
-<<<<<<< HEAD
 // [START list]
 function listclass (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
@@ -98,7 +97,6 @@ function liststaff (limit, token, cb) {
 }
 
 // [START list]
-=======
 // [START list]
 function listclass (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
@@ -151,7 +149,6 @@ function liststaff (limit, token, cb) {
 }
 
 // [START list]
->>>>>>> erik_branch
 function liststudents (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
   var connection = getConnection();
@@ -167,8 +164,6 @@ function liststudents (limit, token, cb) {
   );
   connection.end();
 }
-<<<<<<< HEAD
-=======
 
 function listtakes (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
@@ -234,7 +229,6 @@ function listtook (limit, token, cb) {
   connection.end();
 }
 
->>>>>>> erik_branch
 
 function listtakes (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;
@@ -319,13 +313,6 @@ function read (id, cb) {
   connection.end();
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-module.exports = {
-  list: list,
-=======
-=======
->>>>>>> erik_branch
 function readstaff (id, cb) {
   var connection = getConnection();
   connection.query(
@@ -365,7 +352,6 @@ function _delete (id, cb) {
 }
 
 module.exports = {
-  createSchema: createSchema,
   listbehavior: listbehavior,
   listclass: listclass,
   listdescription: listdescription,
@@ -375,8 +361,4 @@ module.exports = {
   listteaches: listteaches,
   listtest: listtest,
   listtook: listtook,
-  
-  create: create,
->>>>>>> erik_branch
-  read: read,
 };
