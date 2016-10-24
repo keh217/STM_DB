@@ -1,8 +1,8 @@
 <html>
 <head>
 <title>Mmmm</title>
-    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+    <script   src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"   integrity="sha256-HmfY28yh9v2U4HfIXC+0D6HCdWyZI42qjaiCFEJgpo0="   crossorigin="anonymous"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="container-fluid center-block col-md-4 col-md-offset-4" style="margin-top: 100px; float: none;">
-    <form id="entryForm" name="entryForm" action="" enctype="multipart/form-data" method="post">
+    <form id="entryForm" name="entryForm" action="http://localhost:8080/csv/upload" enctype="multipart/form-data" method="post">
         <div class="form-group">
             <label>File to Upload</label>
             <input class="form-control" type="file" name="students" id="students" required />

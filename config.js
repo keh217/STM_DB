@@ -40,19 +40,19 @@ nconf
     // configure the appropriate settings for each storage engine below.
     // If you are unsure, use datastore as it requires no additional
     // configuration.
-    DATA_BACKEND: 'datastore',
+    DATA_BACKEND: 'cloudsql',
 
     // This is the id of your project in the Google Cloud Developers Console.
-    GCLOUD_PROJECT: '',
+    GCLOUD_PROJECT: 'stm-management-db',
 
     // MongoDB connection string
     // https://docs.mongodb.org/manual/reference/connection-string/
     MONGO_URL: 'mongodb://localhost:27017',
     MONGO_COLLECTION: 'books',
 
-    MYSQL_USER: '',
-    MYSQL_PASSWORD: '',
-    MYSQL_HOST: '',
+    MYSQL_USER: 'root',
+    MYSQL_PASSWORD: 'tracysell',
+    MYSQL_HOST: '104.197.192.209',
 
     // Port the HTTP server
     PORT: 8080
