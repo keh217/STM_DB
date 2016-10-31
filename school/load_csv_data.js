@@ -14,39 +14,26 @@ function getConnection () {
   }));
 }
 
-function insert (data, cb) {
+function insert_student (data, cb) {
     var connection = getConnection();
     connection.query(
-        'INSERT INTO `student` VALUES (?, ?, ?, ?, ?)',
+        'INSERT INTO `student` (ID, LName, FName, DOB) VALUES (?, ?, ?, ?)',
         data,
-        function (err, res) {
-            if (err) {
-                return cb(err);
-            }
-            cb(null, res);
-        }
+        cb
     );
-
-    connection.query(
-        'INSERT INTO `staff` (`emailID`, `name`, `access_level`) VALUES (?, ?, ?)',
-        data,
-        function (err, res) {
-            if (err) {
-                return cb(err);
-            }
-            cb(null, res);
-        }
-    );
-
     connection.end();
 }
 
+module.exports = {
+    insert_student: insert_student
+};
+
 if (module == require.main) {
     // call the data
-    var data = ;
+    var data;
 
     // run the insert
-    for (var i : data){
+    for (var i in data){
         insert(data[i], function (err, res) {
             if (err) {
                 console.log(err);

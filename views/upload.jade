@@ -1,0 +1,13 @@
+doctype html
+html(lang="en")
+    head
+        title CSV Uploader
+        meta(charset='utf-8')
+        link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+    body
+        div(style="margin-top: 100px; float: none;").container-fluid.center-block.col-md-4.col-md-offset-4
+            form(id="entryForm", name="entryForm", action="http://localhost:8080/csv/upload", enctype="multipart/form-data", method="post")
+                div().form-group
+                    label() File to Upload
+                    input(type="file", name="students", id="students", class="form-control")
+                    button(type="submit", name="submit", id="submit", class="btn btn-default") Sumbit
