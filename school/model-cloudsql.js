@@ -147,17 +147,15 @@ function liststaff (limit, token, cb) {
 }
 
 // [START list]
-function liststudents (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
+function liststudents (cb) {
   var connection = getConnection();
   connection.query(
-    'SELECT * FROM `student` LIMIT ? OFFSET ?', [limit, token],
+    'SELECT `ID`, `LName`, `FName`, `DOB` FROM `student`',
     function (err, results) {
       if (err) {
         return cb(err);
       }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
+      cb(null, results);
     }
   );
   connection.end();
