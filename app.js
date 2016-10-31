@@ -30,6 +30,7 @@ app.set('trust proxy', true);
 // app.use('/api', require('./school/crud'));
 app.use('/api', require('./school/api'));
 app.use('/csv', require('./school/api_csv'));
+app.use('/upload', require('./school/crud'));
 
 // Redirect root to /api
 app.get('/', function (req, res) {
