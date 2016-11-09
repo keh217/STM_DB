@@ -85,14 +85,11 @@ router.get('/staff', function list (req, res, next) {
 
 
 router.get('/students', function list (req, res, next) {
-  getModel().liststudents(10, req.query.pageToken, function (err, entities, cursor) {
+  getModel().liststudents(function (err, entities) {
     if (err) {
       return next(err);
     }
-    res.json({
-      students: entities,
-      nextPageToken: cursor
-    });
+    res.json(entities);
   });
 });
 
