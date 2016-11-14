@@ -30,22 +30,6 @@ router.get('/', function hello (req, res, next) {
   res.send("Welcome to our API");
 });
 
-/**
- * GET /api/students
- *
- * Retrieve a page of books (up to ten at a time).
- */
-router.get('/behavior', function list (req, res, next) {
-  getModel().listbehavior(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-        return next(err);
-    }
-    res.json({
-      staff: entities,
-          nextPageToken: cursor
-          });
-      });
-    });
 
 router.get('/class', function list (req, res, next) {
   getModel().listclass(10, req.query.pageToken, function (err, entities, cursor) {
@@ -58,18 +42,6 @@ router.get('/class', function list (req, res, next) {
     });
   });
 });
-
-router.get('/description', function list (req, res, next) {
-  getModel().listdescription(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-        return next(err);
-    }
-    res.json({
-      staff: entities,
-          nextPageToken: cursor
-          });
-      });
-    });
 
 router.get('/staff', function list (req, res, next) {
   getModel().liststaff(10, req.query.pageToken, function (err, entities, cursor) {
@@ -90,66 +62,6 @@ router.get('/students', function list (req, res, next) {
       return next(err);
     }
     res.json(entities);
-  });
-});
-
-router.get('/takes', function list (req, res, next) {
-  getModel().listtakes(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-      return next(err);
-    }
-    res.json({
-      students: entities,
-      nextPageToken: cursor
-    });
-  });
-});
-
-router.get('/teaches', function list (req, res, next) {
-  getModel().listteaches(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-      return next(err);
-    }
-    res.json({
-      students: entities,
-      nextPageToken: cursor
-    });
-  });
-});
-
-router.get('/teaches', function list (req, res, next) {
-  getModel().listteaches(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-      return next(err);
-    }
-    res.json({
-      students: entities,
-      nextPageToken: cursor
-    });
-  });
-});
-
-router.get('/test', function list (req, res, next) {
-  getModel().listtest(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-      return next(err);
-    }
-    res.json({
-      students: entities,
-      nextPageToken: cursor
-    });
-  });
-});
-
-router.get('/took', function list (req, res, next) {
-  getModel().listtook(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-      return next(err);
-    }
-    res.json({
-      students: entities,
-      nextPageToken: cursor
-    });
   });
 });
 
@@ -198,15 +110,6 @@ router.get('/students/:student', function get (req, res, next) {
   });
 });
 
-
-
-
-
-/**
- * GET /api/books/:id
- *
- * Retrieve a book.
- */
 router.get('/:book', function get (req, res, next) {
   getModel().read(req.params.book, function (err, entity) {
     if (err) {
@@ -216,11 +119,6 @@ router.get('/:book', function get (req, res, next) {
   });
 });
 
-/**
- * PUT /api/books/:id
- *
- * Update a book.
- */
 router.put('/:book', function update (req, res, next) {
   getModel().update(req.params.book, req.body, function (err, entity) {
     if (err) {
@@ -230,11 +128,6 @@ router.put('/:book', function update (req, res, next) {
   });
 });
 
-/**
- * DELETE /api/books/:id
- *
- * Delete a book.
- */
 router.delete('/:book', function _delete (req, res, next) {
   getModel().delete(req.params.book, function (err) {
     if (err) {
@@ -244,9 +137,6 @@ router.delete('/:book', function _delete (req, res, next) {
   });
 });
 
-/**
- * Errors on "/api/books/*" routes.
- */
 router.use(function handleRpcError (err, req, res, next) {
   // Format error and forward to generic error handler for logging and
   // responding to the request
