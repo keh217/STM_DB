@@ -57,6 +57,20 @@ function getStudents (req,grade, cb) {
     connection.end();
 }
 
+function getTeachers (grade, cb) {
+    var connection = getConnection();
+    connection.query(
+                     'SELECT * FROM `staff` where grade = '+grade+'',
+                     function (err, results) {
+                         if (err) {
+                             return cb(err);
+                         }
+                         cb(null, results);
+                     }
+                     );
+    connection.end();
+}
+
 // [START list]
 function listclass (limit, token, cb) {
   token = token ? parseInt(token, 10) : 0;

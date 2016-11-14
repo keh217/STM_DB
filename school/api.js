@@ -30,6 +30,28 @@ router.get('/', function hello (req, res, next) {
   res.send("Welcome to our API");
 });
 
+router.get('/kidsAndTeachers', function kidsAndTeachers (req, res, next) {
+        console.log("in kidsAndTeachers");
+        //get the right grade                                                                                   
+        var grade = req.query['grade'];
+        console.log(req.query);
+        var ret,ret2;
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        getModel().getTeachers(grade, function (err, entities) {
+                if (err) {
+                    return next(err);
+                }
+                res.write('[');
+                res.write(JSON.stringify({staff: entities}));
+                getModel().getStudents(req, grade, function (err, entities) {
+                        if (err) {
+                            return next(err);
+                        }
+                        res.write(JSON.stringify({students: entities}));
+                        res.end(']');
+                    });
+            });
+    });
 
 router.get('/class', function list (req, res, next) {
   getModel().listclass(10, req.query.pageToken, function (err, entities, cursor) {
