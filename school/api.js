@@ -30,9 +30,30 @@ router.get('/', function hello (req, res, next) {
   res.send("Welcome to our API");
 });
 
-router.get('/kidsAndTeachers', function kidsAndTeachers (req, res, next) {
+router.get('/prevkidsAndTeachers', function kidsAndTeachers (req, res, next) {
         console.log("in kidsAndTeachers");
-        //get the right grade                                                                                   
+        var grade = req.query['grade'];
+        console.log(grade);
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        getModel().getTeachers(grade, function (err, entities) {
+                if (err) {
+                    return next(err);
+                }
+                res.write('[');
+                res.write(JSON.stringify({staff: entities}));
+		var prev = 1;
+                getModel().getStudents(req, grade, prev, function (err, entities) {
+                        if (err) {
+                            return next(err);
+                        }
+                        res.write(JSON.stringify({students: entities}));
+                        res.end(']');
+                    });
+            });
+    });
+
+router.get('/curkidsAndTeachers', function kidsAndTeachers (req, res, next) {
+        console.log("in kidsAndTeachers");
         var grade = req.query['grade'];
         console.log(req.query);
         var ret,ret2;
@@ -43,7 +64,8 @@ router.get('/kidsAndTeachers', function kidsAndTeachers (req, res, next) {
                 }
                 res.write('[');
                 res.write(JSON.stringify({staff: entities}));
-                getModel().getStudents(req, grade, function (err, entities) {
+		var prev = 0;
+                getModel().getStudents(req, grade,prev, function (err, entities) {
                         if (err) {
                             return next(err);
                         }
@@ -51,6 +73,39 @@ router.get('/kidsAndTeachers', function kidsAndTeachers (req, res, next) {
                         res.end(']');
                     });
             });
+    });
+
+router.get('/grade', function grade (req,res,next){
+	var grade = req.query['grade'];
+	var prev = 0;
+	getModel().getStudents(req,grade,prev, function(err, entities) {
+		if(err) {
+		    return next(err);
+		}
+		res.json({students: entities});
+	    });
+    });
+
+router.get('/person', function person (req,res,next){
+	var id = req.query['id'];
+	var student = req.query['student'];
+	if(student == 1){
+	    //get student
+	    getModel().selectStudent(id, function(err, result){
+		    if(err){
+			return next(err);
+		    }
+		    res.json({student: result});
+		});
+	}else{
+	    //get staff
+	    getModel().selectStaff(id, function(err, result){
+                    if(err){
+			return next(err);
+                    }
+                    res.json({staff: result});
+                });
+	}
     });
 
 router.get('/class', function list (req, res, next) {

@@ -27,23 +27,24 @@ function getConnection () {
   }));
 }
 
-function getStudents (req,grade, cb) {
+function getStudents (req,grade,prev, cb) {
     console.log("in getStudents");
     var connection = getConnection();
-    if(grade == '1'){
-	grade = 'K';
-    }else{
-	try{
-	    grade = parseInt(grade) -1;
-	}
-	catch(err){
-	    console.log(err.message);
+    if(parseInt(prev) == 1){
+	if(grade == '1'){
+	    grade = 'K';
+	}else{
+	    try{
+		grade = parseInt(grade) -1;
+	    }
+	    catch(err){
+		console.log(err.message);
+	    }
 	}
     }
-    
     var year = req.app.get('year'); 
-    console.log("year is: " + year);
-    console.log("grade is: " + grade);
+    //console.log("year is: " + year);
+    //console.log("grade is: " + grade);
     connection.query(
 		     'select SEX, firstName, lastName, dial4, ydsd.classroomBehavior as behaviorObservation from student natural join ydsd where ydsd.grade = '+grade+' and year = '+year+'; ',
 		     function (err, results) {
@@ -59,6 +60,7 @@ function getStudents (req,grade, cb) {
 
 function getTeachers (grade, cb) {
     var connection = getConnection();
+    console.log("in getTeachers");
     connection.query(
                      'SELECT * FROM `staff` where grade = '+grade+'',
                      function (err, results) {
@@ -138,10 +140,26 @@ function selectStudent (id,cb){
   connection.end();
 }
 
+function selectStaff (id,cb){
+    var connection = getConnection();
+    connection.query('SELECT * FROM `staff` WHERE `staff`.`emailID` = ?', id, function(err,results){
+	    if (err) {
+		return cb(err);
+	    }
+	    if (!results.length) {
+		return cb({
+			code: 404,
+			    message: 'Not found'
+			    });
+	    }
+	    cb(null, results[0]);
+	});
+    connection.end();
+}
 
 function selectGrade(grade,cb){
   var connection = getConnection();
-  connection.query('SELECT * FROM `student`,`ydsd` WHERE `ydsd`.`grade` = ?',grade,function(err,results){
+  connection.query('SELECT * FROM student natural join ydsd  WHERE ydsd.grade = ?',grade,function(err,results){
     if (err) {
         return cb(err);
       }
@@ -214,10 +232,13 @@ function _delete (id, cb) {
 }
 
 module.exports = {
-  listclass: listclass,
-  liststaff: liststaff,
-  liststudents: liststudents,
-  selectStudent: selectStudent,
-  selectGrade: selectGrade,
-  read: read,
+    getStudents: getStudents,
+    getTeachers: getTeachers,
+    listclass: listclass,
+    liststaff: liststaff,
+    liststudents: liststudents,
+    selectStudent: selectStudent,
+    selectStaff: selectStaff,
+    selectGrade: selectGrade,
+    read: read,
 };
