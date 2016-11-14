@@ -16,6 +16,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var config = require('../config');
+var url = require('url');
+
 
 function getModel () {
   return require('./model-' + config.get('DATA_BACKEND'));
@@ -26,25 +28,35 @@ var router = express.Router();
 // Automatically parse request body as JSON
 router.use(bodyParser.json());
 
+router.get
+
 router.get('/', function hello (req, res, next) {
   res.send("Welcome to our API");
 });
 
-/**
- * GET /api/students
- *
- * Retrieve a page of books (up to ten at a time).
- */
-router.get('/behavior', function list (req, res, next) {
-  getModel().listbehavior(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-        return next(err);
-    }
-    res.json({
-      staff: entities,
-          nextPageToken: cursor
-          });
-      });
+
+
+router.get('/kidsAndTeachers', function kidsAndTeachers (req, res, next) {
+	console.log("in kidsAndTeachers");
+	//get the right grade
+	var grade = req.query['grade'];
+	console.log(req.query);
+	var ret,ret2;
+	res.writeHead(200, {'Content-Type': 'application/json'});
+	getModel().getTeachers(grade, function (err, entities) {
+		if (err) {
+		    return next(err);
+                }
+		res.write('[');
+		res.write(JSON.stringify({staff: entities}));
+		getModel().getStudents(req, grade, function (err, entities) {
+			if (err) {
+			    return next(err);
+			}
+			res.write(JSON.stringify({students: entities}));
+			res.end(']');
+		    });
+	    });
     });
 
 router.get('/class', function list (req, res, next) {
@@ -59,19 +71,10 @@ router.get('/class', function list (req, res, next) {
   });
 });
 
-router.get('/description', function list (req, res, next) {
-  getModel().listdescription(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-        return next(err);
-    }
-    res.json({
-      staff: entities,
-          nextPageToken: cursor
-          });
-      });
-    });
-
 router.get('/staff', function list (req, res, next) {
+	var url_parts = url.parse(req.url);
+	console.log(url_parts);
+	console.log(url_parts.pathname);	
   getModel().liststaff(10, req.query.pageToken, function (err, entities, cursor) {
     if (err) {
         return next(err);
@@ -107,42 +110,6 @@ router.get('/takes', function list (req, res, next) {
 
 router.get('/teaches', function list (req, res, next) {
   getModel().listteaches(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-      return next(err);
-    }
-    res.json({
-      students: entities,
-      nextPageToken: cursor
-    });
-  });
-});
-
-router.get('/teaches', function list (req, res, next) {
-  getModel().listteaches(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-      return next(err);
-    }
-    res.json({
-      students: entities,
-      nextPageToken: cursor
-    });
-  });
-});
-
-router.get('/test', function list (req, res, next) {
-  getModel().listtest(10, req.query.pageToken, function (err, entities, cursor) {
-    if (err) {
-      return next(err);
-    }
-    res.json({
-      students: entities,
-      nextPageToken: cursor
-    });
-  });
-});
-
-router.get('/took', function list (req, res, next) {
-  getModel().listtook(10, req.query.pageToken, function (err, entities, cursor) {
     if (err) {
       return next(err);
     }
@@ -227,6 +194,7 @@ router.delete('/:book', function _delete (req, res, next) {
  * Errors on "/api/books/*" routes.
  */
 router.use(function handleRpcError (err, req, res, next) {
+	console.log("in handleRpcError");
   // Format error and forward to generic error handler for logging and
   // responding to the request
   err.response = {
