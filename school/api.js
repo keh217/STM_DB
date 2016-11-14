@@ -133,10 +133,11 @@ router.get('/staff', function list (req, res, next) {
         return next(err);
     }
     res.json({
-      staff: entities,
-          nextPageToken: cursor
-          });
+	    staff: entities,
+		nextPageToken: cursor
+		});
       });
+    });
 
 /**********************************************************************/
 router.get('/name', function list(req,res,next){

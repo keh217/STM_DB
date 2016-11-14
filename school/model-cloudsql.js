@@ -29,7 +29,6 @@ function getConnection () {
 		    }));
 }
 
-<<<<<<< HEAD
 function getStudents (req,grade,prev, cb) {
     console.log("in getStudents");
     var connection = getConnection();
