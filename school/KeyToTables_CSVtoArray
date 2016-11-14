@@ -1,0 +1,36 @@
+Last Name,     //LName
+First Name,    //FName
+Birth Date,    //DOB
+School ID,    //student ID
+Grade,			//gradeLevel (in class table)
+Homeroom Teacher,	//name (in staff table)
+Recent ASP Date(*),
+Next Meeting Sch. (*),
+Advanced Math (5-8) (*),    //test
+Speech and Language (*),    
+Student Development (*),   //add to behavior
+Math Enrichment (1-4) (*),  //test names
+IU Reading Services (*),
+IU Math Services (*),
+Earobics (*),             
+Classroom Behavior (*),   //add to behavior
+Work Habits (*),         //add to behavior
+Faculty Student (*),    //add to student
+Youngest Child,        //add to student
+Only Child,            //add to student
+New Student (*),	  //add to behavior
+Medical Concern (*), //add to behavior
+HMP (*),     //Test 
+Last Name,  // Ignore
+DRA (*),    //Test names
+RAZ Kids ,
+WTW (*),
+iStation (GE) (*),
+Math Benchmark,
+Dibels,
+CogAT (SAS) Composite,
+IOWA (NPR),
+ELA Total,
+Extended ELA,
+Math Total,
+DIAL 4 Score 

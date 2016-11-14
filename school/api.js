@@ -153,7 +153,25 @@ router.get('/took', function list (req, res, next) {
   });
 });
 
+/**********************************************************************/
+router.get('/name', function list(req,res,next){
+  getModel().selectStudent(req.query.id, function(err,entity){
+  if (err) {
+      return next(err);
+    }
+    res.json(entity);
+  });
+});
 
+router.get('/grade', function list(req,res,next){
+  getModel().selectGrade(req.query.grade, function(err,entity){
+  if (err) {
+      return next(err);
+    }
+    res.json(entity);
+  });
+});
+/**********************************************************************/
 /**
  * POST /api/books
  *
@@ -179,6 +197,9 @@ router.get('/students/:student', function get (req, res, next) {
     res.json(entity);
   });
 });
+
+
+
 
 
 /**

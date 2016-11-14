@@ -290,7 +290,43 @@ function listtook (limit, token, cb) {
   connection.end();
 }
 
+/**************************/
+function selectStudent (id,cb){
+  var connection = getConnection();
+  connection.query('SELECT * FROM `student`,`ydsd` WHERE `student`.`id` = ?', id, function(err,results){
+    if (err) {
+        return cb(err);
+      }
+      if (!results.length) {
+        return cb({
+          code: 404,
+          message: 'Not found'
+        });
+      }
+      cb(null, results[0]);
+    });
+  connection.end();
+}
 
+
+function selectGrade(grade,cb){
+  var connection = getConnection();
+  connection.query('SELECT * FROM `student`,`ydsd` WHERE `ydsd`.`grade` = ?',grade,function(err,results){
+    if (err) {
+        return cb(err);
+      }
+      if (!results.length) {
+        return cb({
+          code: 404,
+          message: 'Not found'
+        });
+      }
+      cb(null, results[0]);
+    });
+  connection.end();
+}
+
+/*************************/
 function read (id, cb) {
   var connection = getConnection();
   connection.query(
@@ -308,6 +344,7 @@ function read (id, cb) {
     });
   connection.end();
 }
+
 
 function readstaff (id, cb) {
   var connection = getConnection();
@@ -357,5 +394,7 @@ module.exports = {
   listteaches: listteaches,
   listtest: listtest,
   listtook: listtook,
+  selectStudent: selectStudent,
+  selectGrade: selectGrade,
   read: read,
 };
