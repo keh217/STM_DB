@@ -27,6 +27,35 @@ function getConnection () {
   }));
 }
 
+function getStudents (req,grade, cb) {
+    console.log("in getStudents");
+    var connection = getConnection();
+    if(grade == '1'){
+	grade = 'K';
+    }else{
+	try{
+	    grade = parseInt(grade) -1;
+	}
+	catch(err){
+	    console.log(err.message);
+	}
+    }
+    
+    var year = req.app.get('year'); 
+    console.log("year is: " + year);
+    console.log("grade is: " + grade);
+    connection.query(
+		     'select SEX, firstName, lastName, dial4, ydsd.classroomBehavior as behaviorObservation from student natural join ydsd where ydsd.grade = '+grade+' and year = '+year+'; ',
+		     function (err, results) {
+			 console.log('results: ' + results);
+			 if (err) {
+			     return cb(err);
+			 }
+			 cb(null, results);
+		     }
+		     );
+    connection.end();
+}
 
 // [START list]
 function listclass (limit, token, cb) {
