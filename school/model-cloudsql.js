@@ -20,15 +20,16 @@ var config = require('../config');
 
 
 function getConnection () {
-  return mysql.createConnection(extend({
-    database: 'STM_DB'
-  }, {
-    host: config.get('MYSQL_HOST'),
-    user: config.get('MYSQL_USER'),
-    password: config.get('MYSQL_PASSWORD')
-  }));
+    return mysql.createConnection(extend({
+		database: 'STM_DB'
+		    }, {
+		host: config.get('MYSQL_HOST'),
+		    user: config.get('MYSQL_USER'),
+		    password: config.get('MYSQL_PASSWORD')
+		    }));
 }
 
+<<<<<<< HEAD
 // [START getStudents]                                                 
 function getStudents (req,grade, cb) {
     console.log("in getStudents");
@@ -55,6 +56,20 @@ function getStudents (req,grade, cb) {
 			     return cb(err);
 			 }
 			 cb(null, results);
+=======
+// [START listbehavior]
+function listbehavior (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `behavior` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+>>>>>>> eea1b2b7f9293b0f0f42f0cf21b7332082eefadb
 		     }
 		     );
     connection.end();
@@ -80,72 +95,113 @@ function getTeachers (grade, cb) {
 
 // [START list]
 function listclass (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `class` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `class` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
 // [START list_staff]
+<<<<<<< HEAD
+=======
+function listdescription (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `description` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
+}
+
+// [START list_staff]
+>>>>>>> eea1b2b7f9293b0f0f42f0cf21b7332082eefadb
 function liststaff (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `staff` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `staff` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
 function listclass (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `class` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `class` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
 // [START list_staff]
+<<<<<<< HEAD
+=======
+function listdescription (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `description` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
+}
+
+// [START list_staff]
+>>>>>>> eea1b2b7f9293b0f0f42f0cf21b7332082eefadb
 function liststaff (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `staff` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `staff` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
 // [START list]
+<<<<<<< HEAD
 function liststudents (cb) {
   var connection = getConnection();
   connection.query(
@@ -158,129 +214,218 @@ function liststudents (cb) {
     }
   );
   connection.end();
+=======
+function liststudents (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `student` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
+>>>>>>> eea1b2b7f9293b0f0f42f0cf21b7332082eefadb
 }
 
 function listtakes (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `takes` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `takes` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
 function listteaches (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `teaches` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `teaches` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
+<<<<<<< HEAD
+=======
+function listtest (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `test` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
+}
+
+function listtook (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `took` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
+}
+
+
+>>>>>>> eea1b2b7f9293b0f0f42f0cf21b7332082eefadb
 function listtakes (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `takes` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `takes` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
 function listteaches (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `teaches` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `teaches` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
+<<<<<<< HEAD
+=======
+function listtest (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `test` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
+}
+
+function listtook (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `took` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
+}
+
+
+>>>>>>> eea1b2b7f9293b0f0f42f0cf21b7332082eefadb
 function read (id, cb) {
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `student` WHERE `id` = ?', id, function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      if (!results.length) {
-        return cb({
-          code: 404,
-          message: 'Not found'
-        });
-      }
-      cb(null, results[0]);
-    });
-  connection.end();
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `student` WHERE `id` = ?', id, function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 if (!results.length) {
+			     return cb({
+				     code: 404,
+					 message: 'Not found'
+					 });
+			 }
+			 cb(null, results[0]);
+		     });
+    connection.end();
 }
 
 function readstaff (id, cb) {
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `staff` WHERE `id` = ?', id, function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      if (!results.length) {
-        return cb({
-          code: 404,
-          message: 'Not found'
-        });
-      }
-      cb(null, results[0]);
-    });
-  connection.end();
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `staff` WHERE `id` = ?', id, function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 if (!results.length) {
+			     return cb({
+				     code: 404,
+					 message: 'Not found'
+					 });
+			 }
+			 cb(null, results[0]);
+		     });
+    connection.end();
 }
 
 // [START update]
 function update (id, data, cb) {
-  var connection = getConnection();
-  connection.query(
-    'UPDATE `books` SET ? WHERE `id` = ?', [data, id], function (err) {
-      if (err) {
-        return cb(err);
-      }
-      read(id, cb);
-    });
-  connection.end();
+    var connection = getConnection();
+    connection.query(
+		     'UPDATE `books` SET ? WHERE `id` = ?', [data, id], function (err) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 read(id, cb);
+		     });
+    connection.end();
 }
 // [END update]
 
 function _delete (id, cb) {
-  var connection = getConnection();
-  connection.query('DELETE FROM `books` WHERE `id` = ?', id, cb);
-  connection.end();
+    var connection = getConnection();
+    connection.query('DELETE FROM `books` WHERE `id` = ?', id, cb);
+    connection.end();
 }
 
 module.exports = {
+<<<<<<< HEAD
   listclass: listclass,
   liststaff: liststaff,
   getStudents: getStudents,
@@ -290,3 +435,16 @@ module.exports = {
   listteaches: listteaches,
   read: read,
 };
+=======
+    listbehavior: listbehavior,
+    listclass: listclass,
+    listdescription: listdescription,
+    liststaff: liststaff,
+    liststudents: liststudents,
+    listtakes: listtakes,
+    listteaches: listteaches,
+    listtest: listtest,
+    listtook: listtook,
+    read: read,
+};
+>>>>>>> eea1b2b7f9293b0f0f42f0cf21b7332082eefadb
