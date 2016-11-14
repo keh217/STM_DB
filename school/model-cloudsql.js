@@ -17,16 +17,19 @@ var extend = require('lodash').assign;
 var mysql = require('mysql');
 var config = require('../config');
 
+
+
 function getConnection () {
-  return mysql.createConnection(extend({
-    database: 'STM_DB'
-  }, {
-    host: config.get('MYSQL_HOST'),
-    user: config.get('MYSQL_USER'),
-    password: config.get('MYSQL_PASSWORD')
-  }));
+    return mysql.createConnection(extend({
+		database: 'STM_DB'
+		    }, {
+		host: config.get('MYSQL_HOST'),
+		    user: config.get('MYSQL_USER'),
+		    password: config.get('MYSQL_PASSWORD')
+		    }));
 }
 
+<<<<<<< HEAD
 function getStudents (req,grade,prev, cb) {
     console.log("in getStudents");
     var connection = getConnection();
@@ -60,54 +63,51 @@ function getStudents (req,grade,prev, cb) {
 
 function getTeachers (grade, cb) {
     var connection = getConnection();
-    console.log("in getTeachers");
     connection.query(
-                     'SELECT * FROM `staff` where grade = '+grade+'',
-                     function (err, results) {
-                         if (err) {
-                             return cb(err);
-                         }
-                         cb(null, results);
-                     }
-                     );
+		     'SELECT * FROM `staff` where grade = '+grade+'',
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 cb(null, results);
+		     }
+		     );
     connection.end();
 }
 
 // [START list]
 function listclass (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `class` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `class` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
-// [START list_staff]
 function liststaff (limit, token, cb) {
-  token = token ? parseInt(token, 10) : 0;
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `staff` LIMIT ? OFFSET ?', [limit, token],
-    function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      var hasMore = results.length === limit ? token + results.length : false;
-      cb(null, results, hasMore);
-    }
-  );
-  connection.end();
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `staff` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
 }
 
-// [START list]
 function liststudents (cb) {
   var connection = getConnection();
   connection.query(
@@ -175,60 +175,92 @@ function selectGrade(grade,cb){
 }
 
 /*************************/
+function listtakes (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `takes` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
+}
+
+function listteaches (limit, token, cb) {
+    token = token ? parseInt(token, 10) : 0;
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `teaches` LIMIT ? OFFSET ?', [limit, token],
+		     function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 var hasMore = results.length === limit ? token + results.length : false;
+			 cb(null, results, hasMore);
+		     }
+		     );
+    connection.end();
+}
+
 function read (id, cb) {
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `student` WHERE `id` = ?', id, function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      if (!results.length) {
-        return cb({
-          code: 404,
-          message: 'Not found'
-        });
-      }
-      cb(null, results[0]);
-    });
-  connection.end();
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `student` WHERE `id` = ?', id, function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 if (!results.length) {
+			     return cb({
+				     code: 404,
+					 message: 'Not found'
+					 });
+			 }
+			 cb(null, results[0]);
+		     });
+    connection.end();
 }
 
 function readstaff (id, cb) {
-  var connection = getConnection();
-  connection.query(
-    'SELECT * FROM `staff` WHERE `id` = ?', id, function (err, results) {
-      if (err) {
-        return cb(err);
-      }
-      if (!results.length) {
-        return cb({
-          code: 404,
-          message: 'Not found'
-        });
-      }
-      cb(null, results[0]);
-    });
-  connection.end();
+    var connection = getConnection();
+    connection.query(
+		     'SELECT * FROM `staff` WHERE `id` = ?', id, function (err, results) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 if (!results.length) {
+			     return cb({
+				     code: 404,
+					 message: 'Not found'
+					 });
+			 }
+			 cb(null, results[0]);
+		     });
+    connection.end();
 }
 
 // [START update]
 function update (id, data, cb) {
-  var connection = getConnection();
-  connection.query(
-    'UPDATE `books` SET ? WHERE `id` = ?', [data, id], function (err) {
-      if (err) {
-        return cb(err);
-      }
-      read(id, cb);
-    });
-  connection.end();
+    var connection = getConnection();
+    connection.query(
+		     'UPDATE `books` SET ? WHERE `id` = ?', [data, id], function (err) {
+			 if (err) {
+			     return cb(err);
+			 }
+			 read(id, cb);
+		     });
+    connection.end();
 }
 // [END update]
 
 function _delete (id, cb) {
-  var connection = getConnection();
-  connection.query('DELETE FROM `books` WHERE `id` = ?', id, cb);
-  connection.end();
+    var connection = getConnection();
+    connection.query('DELETE FROM `books` WHERE `id` = ?', id, cb);
+    connection.end();
 }
 
 module.exports = {
