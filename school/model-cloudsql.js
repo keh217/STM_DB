@@ -16,7 +16,8 @@
 var extend = require('lodash').assign;
 var mysql = require('mysql');
 var config = require('../config');
-
+//ADDED BY ERIK TO MAKE HIS FUNCTION WORK:
+var request = require('request');
 
 
 function getConnection () {
@@ -28,6 +29,153 @@ function getConnection () {
 		    password: config.get('MYSQL_PASSWORD')
 		    }));
 }
+
+function getGrades(req,cb){
+    console.log("in getGrades in model");
+    var allGrades = ['K','1','2','3','4','5','6','7','8'];
+    var l = allGrades.length;
+    var count = 0;
+    var toRet = "";
+    getGradesHelper(req,allGrades,l,count,toRet,function(err, results){
+	    if(err){
+		return cb(err);
+	    }
+	    console.log("returning from getGrades:");
+	    console.log(results);
+	    cb(results);
+	});
+}
+
+function getGradesHelper(req,allGrades,l,count,toRet,cb){
+    console.log("in getGradesHelper");
+    if(count >= l){
+	console.log("COUNT is >= l");
+	console.log("returning from getGradesHelper: ");
+	console.log(toRet);
+	cb(toRet);
+    }else{
+	getGrade(req,allGrades[count],function(err, results){
+		if(err){
+		    return cb(err);
+		}
+		toRet += results;
+		getGradesHelper(req,allGrades,l,count+1,toRet,cb);
+	    });
+    }    
+}
+
+function getGrade(req,g,cb){
+    console.log('in getGrade for ' + g);
+    var connection = getConnection();
+    //first thing- get the # of sections in a grade.
+    var year = req.app.get('year');
+    var toRet = "";
+    connection.query("select distinct section.sectionID from staff natural join teaches natural join section where section.year = '"+year+"' and section.grade = '"+g+"';",
+		     function (err, results){
+			 if (err){
+			     return cb(err);
+			 }
+			 console.log(results);
+			 var len = results.length;
+			 console.log("we found " + len + " classes for grade " + g);
+			 getSections(results,len,year, function(err, sects){
+				 if(err){return cb(err);}
+				 console.log("**************** the return value from getSections for grade " + g + " was: ");
+				 console.log(sects);
+				 cb(sects); 
+			     });
+		     });
+    connection.end();
+}
+
+function getSections(sections,len,year, cb){
+    //use recursive helper function to do this
+    console.log("in getSections");
+    var sects = [];
+    var i = 0;
+    for(var sectionID in sections){
+	console.log(sectionID);
+	sects[i] = sectionID; i++;
+    }
+    var ret = "";
+    var con = getConnection();
+    getSectionsHelper(sects,0,len,ret,year,function(err,results){
+	    if(err){
+		return cb(err);
+	    }
+	    console.log("WOOPEEEEEEEEEEEEEEEEEEEEEEEEE###########");
+	    console.log(results.payload);
+	    cb(results);
+	});
+    con.end();
+}
+
+function getSectionsHelper(sections,i,len,ret,year,cb){
+    var con = getConnection();
+    console.log("in getSectionsHelper");
+    if(i >= len){
+	console.log("finally returning from getSectionsHelper back to getSections: ");
+	console.log(String(ret));
+	//console.log(Object.keys(ret));
+	console.log(typeof ret);
+	var msg = {
+	    payload: "hello",
+	    writeable: true
+	
+	};
+
+	request(url,body,function(err){
+		if(err) {
+		    throw err;
+		}
+		return cb("hello"); // You should call your callback inside request callback, because it's an async operation
+	    }); 
+
+	//console.log(Object.keys(JSON.parse(ret)));
+	//ret.defineProperties('writable','true');
+	//cb(msg);
+	//return cb(msg);
+	//cb("");
+    }else{
+	var sect = sections[i];
+	console.log("querying on : " + sect + ", " + year);
+	//get teacher & students for section[i];
+	con.query("select staff.firstName, staff.lastName from staff natural join teaches natural join section where section.sectionID = '"+sect+"' and year = '"+year+"';" , function(err, result){
+		if(err){
+		    return cb(err);
+		}
+		ret += '{"sectionID":' + sect + ',"teacher":';
+		console.log(result[0]);
+		ret += JSON.stringify(result[0]);
+		var fName,lName = "def";
+
+		//if(result[0]){
+		//fName = JSON.parse(result[0].payload).firstName;
+		//lName = JSON.parse(result[0].payload).lastName;
+		//}
+		//console.log("FNAME: " + fName);
+		//console.log("LNAME: " + lName);
+		ret += ",";
+		console.log(ret);
+		var con2 = getConnection();
+		con2.query("select student.firstName, student.lastName, student.sex, student.dial4, ydsd.classroomBehavior from student natural join takes natural join section natural join ydsd where section.sectionID = '"+sections[i]+"' and year = '"+year+"';" , 
+			  function(err, result2){
+			      if(err){return cb(err);}
+			      ret += '"students":[';
+			      for(var r in result2){
+				  console.log(result2[r]);
+				  ret += JSON.stringify(result2[r]);
+			      }
+			      ret += ']}';
+			      if(i+1 != len){ret += ',';}
+			      getSectionsHelper(sections,i+1,len,ret,year,cb);
+			  });
+		con2.end();
+	    });
+    }
+    con.end();
+}
+
 
 function getStudents (req,grade,prev, cb) {
     console.log("in getStudents");
@@ -272,4 +420,9 @@ module.exports = {
     selectStaff: selectStaff,
     selectGrade: selectGrade,
     read: read,
+    getGrades: getGrades,
+    getGradesHelper: getGradesHelper,
+    getGrade: getGrade,
+    getSections: getSections,
+    getSectionsHelper: getSectionsHelper,
 };

@@ -48,7 +48,7 @@ app.use(function (err, req, res, next) {
   console.error(err);
   // If our routes specified a specific response, then send that. Otherwise,
   // send a generic message so as not to leak anything.
-  res.status(500).send(err.response || 'Something broke!');
+  //res.status(500).send(err.response || 'Something broke!');
 });
 
 if (module === require.main) {

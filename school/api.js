@@ -28,11 +28,49 @@ var router = express.Router();
 // Automatically parse request body as JSON
 router.use(bodyParser.json());
 
-router.get
-
 router.get('/', function hello (req, res, next) {
 	res.send("Welcome to our API");
     });
+
+
+router.get('/getGrades', function getGrades (req,res,next){
+	console.log('in get grades');
+	res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write('[{');
+	getModel().getGrades(req,function(err,results){
+		if(err){
+		    return next(err);
+		    res.end(']');
+		}
+		console.log("THESE R RESULTS!");
+		console.log(results);
+		res.write(results);
+		res.end(']');
+	    });
+	//getModel.getStudents(req,'K',0,function(err, results){
+	//res.json({swag:results});
+	//   });
+    });
+
+/*
+  res.writeHead(200, {'Content-Type': 'application/json'});
+  res.write('[{');
+  var allGrades = ['K','1','2','3','4','5','6','7','8'];
+  
+  for(var i=0;i<allGrades.length; i++){
+  var g = allGrades[i];
+  getModel().getGrade(req,g, function(err, sects){
+  if(err){return next(err);}
+  res.write('{');
+  res.write(JSON.stringify({grade:g}));
+		    res.write(JSON.stringify({sections:sects}));
+		    res.write('}');
+		});
+	}
+	console.log("RESPONSE ENDING!!!!!****");
+	res.end(']');
+    });
+*/  
 
 router.get('/prevkidsAndTeachers', function kidsAndTeachers (req, res, next) {
         console.log("in kidsAndTeachers");
@@ -197,9 +235,12 @@ router.get('/students/:student', function get (req, res, next) {
 
 
 router.use(function handleRpcError (err, req, res, next) {
-	console.log("in handleRpcError");
+  console.log("in handleRpcError");
   // Format error and forward to generic error handler for logging and
   // responding to the request
+  console.log(err.message);
+  //console.log(err.stack);
+  //console.log(err);
   err.response = {
     message: err.message,
     internalCode: err.code
