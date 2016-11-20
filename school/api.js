@@ -36,16 +36,11 @@ router.get('/', function hello (req, res, next) {
 router.get('/getGrades', function getGrades (req,res,next){
 	console.log('in get grades');
 	res.writeHead(200, {'Content-Type': 'application/json'});
-        res.write('[{');
-	getModel().getGrades(req,function(err,results){
-		if(err){
-		    return next(err);
-		    res.end(']');
-		}
+	getModel().getGrades(req,function(results){
 		console.log("THESE R RESULTS!");
 		console.log(results);
 		res.write(results);
-		res.end(']');
+		res.end('');
 	    });
 	//getModel.getStudents(req,'K',0,function(err, results){
 	//res.json({swag:results});

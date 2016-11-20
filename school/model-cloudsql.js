@@ -36,29 +36,25 @@ function getGrades(req,cb){
     var l = allGrades.length;
     var count = 0;
     var toRet = "";
-    getGradesHelper(req,allGrades,l,count,toRet,function(err, results){
-	    if(err){
-		return cb(err);
-	    }
+    getGradesHelper(req,allGrades,l,count,toRet,function(results){
 	    console.log("returning from getGrades:");
 	    console.log(results);
-	    cb(results);
+	    cb('[' + results + ']');
 	});
 }
 
 function getGradesHelper(req,allGrades,l,count,toRet,cb){
     console.log("in getGradesHelper");
     if(count >= l){
-	console.log("COUNT is >= l");
+	//console.log("COUNT is >= l");
 	console.log("returning from getGradesHelper: ");
 	console.log(toRet);
 	cb(toRet);
     }else{
-	getGrade(req,allGrades[count],function(err, results){
-		if(err){
-		    return cb(err);
+	getGrade(req,allGrades[count],function(results){
+		if(count+1 != l){
+		    toRet += results + ',';
 		}
-		toRet += results;
 		getGradesHelper(req,allGrades,l,count+1,toRet,cb);
 	    });
     }    
@@ -78,64 +74,49 @@ function getGrade(req,g,cb){
 			 console.log(results);
 			 var len = results.length;
 			 console.log("we found " + len + " classes for grade " + g);
-			 getSections(results,len,year, function(err, sects){
-				 if(err){return cb(err);}
+			 getSections(results,len,year,g, function(sects){
 				 console.log("**************** the return value from getSections for grade " + g + " was: ");
 				 console.log(sects);
-				 cb(sects); 
+				 toRet += '{ "grade":' + g + ', "sections": [' + sects + ']}';  
+				 cb(toRet); 
 			     });
 		     });
     connection.end();
 }
 
-function getSections(sections,len,year, cb){
+function getSections(sections,len,year,grade, cb){
     //use recursive helper function to do this
     console.log("in getSections");
+    console.log("the sections we're looking at are: " + sections);
+    console.log(sections[0]);
     var sects = [];
-    var i = 0;
-    for(var sectionID in sections){
-	console.log(sectionID);
-	sects[i] = sectionID; i++;
+    
+    for(var i = 0; i < len; i++){
+		sects[i] = sections[i]['sectionID'];
     }
+    console.log("sects is now: " + sects);
     var ret = "";
     var con = getConnection();
-    getSectionsHelper(sects,0,len,ret,year,function(err,results){
-	    if(err){
-		return cb(err);
-	    }
-	    console.log("WOOPEEEEEEEEEEEEEEEEEEEEEEEEE###########");
-	    console.log(results.payload);
-	    cb(results);
-	});
+    if(grade == 'K' || grade == '1' || grade == '2'){
+	getSectionsHelper(sects,0,len,ret,year,function(results){
+		cb(results);
+	    });
+    }else{
+	getSectionsHelperUpper(sects,0,len,ret,year,function(results){
+		cb(results);
+	    });
+    }
     con.end();
 }
 
 function getSectionsHelper(sections,i,len,ret,year,cb){
     var con = getConnection();
     console.log("in getSectionsHelper");
+    console.log(sections,i,len,ret,year,cb);
     if(i >= len){
 	console.log("finally returning from getSectionsHelper back to getSections: ");
 	console.log(String(ret));
-	//console.log(Object.keys(ret));
-	console.log(typeof ret);
-	var msg = {
-	    payload: "hello",
-	    writeable: true
-	
-	};
-
-	request(url,body,function(err){
-		if(err) {
-		    throw err;
-		}
-		return cb("hello"); // You should call your callback inside request callback, because it's an async operation
-	    }); 
-
-	//console.log(Object.keys(JSON.parse(ret)));
-	//ret.defineProperties('writable','true');
-	//cb(msg);
-	//return cb(msg);
-	//cb("");
+	cb(ret);
     }else{
 	var sect = sections[i];
 	console.log("querying on : " + sect + ", " + year);
@@ -148,17 +129,51 @@ function getSectionsHelper(sections,i,len,ret,year,cb){
 		console.log(result[0]);
 		ret += JSON.stringify(result[0]);
 		var fName,lName = "def";
-
-		//if(result[0]){
-		//fName = JSON.parse(result[0].payload).firstName;
-		//lName = JSON.parse(result[0].payload).lastName;
-		//}
-		//console.log("FNAME: " + fName);
-		//console.log("LNAME: " + lName);
 		ret += ",";
 		console.log(ret);
 		var con2 = getConnection();
-		con2.query("select student.firstName, student.lastName, student.sex, student.dial4, ydsd.classroomBehavior from student natural join takes natural join section natural join ydsd where section.sectionID = '"+sections[i]+"' and year = '"+year+"';" , 
+		con2.query("select student.firstName, student.lastName,student.dob, student.sex, student.dial4, ydsd.classroomBehavior from student natural join takes natural join section natural join ydsd where section.sectionID = '"+sections[i]+"' and year = '"+year+"';" , 
+			  function(err, result2){
+			      if(err){return cb(err);}
+			      ret += '"students":[';
+			      for(var r in result2){
+				  console.log(result2[r]);
+				  ret += JSON.stringify(result2[r]);
+			      }
+			      ret += ']}';
+			      if(i+1 != len){ret += ',';}
+			      getSectionsHelper(sections,i+1,len,ret,year,cb);
+			  });
+		con2.end();
+	    });
+    }
+    con.end();
+}
+
+function getSectionsHelperUpper(sections,i,len,ret,year,cb){
+    var con = getConnection();
+    console.log("in getSectionsHelperUpper");
+    console.log(sections,i,len,ret,year,cb);
+    if(i >= len){
+	console.log("finally returning from getSectionsHelperUpper back to getSections: ");
+	console.log(String(ret));
+	cb(ret);
+    }else{
+	var sect = sections[i];
+	console.log("querying on : " + sect + ", " + year);
+	//get teacher & students for section[i];
+	con.query("select staff.firstName, staff.lastName from staff natural join teaches natural join section where section.sectionID = '"+sect+"' and year = '"+year+"';" , function(err, result){
+		if(err){
+		    return cb(err);
+		}
+		ret += '{"sectionID":' + sect + ',"teacher":';
+		console.log(result[0]);
+		ret += JSON.stringify(result[0]);
+		var fName,lName = "def";
+		ret += ",";
+		console.log(ret);
+		var con2 = getConnection();
+		con2.query("select firstName, lastName, dob, sex, aspDate as asp, advancedMath, speechLanguage as speechAndLanguage, IUreadingServices as iuReadingSvcs, IUmathServices as iuMathSvcs,earobics, facStudent as facultyStudent, youngestChild, onlyChild, newStudent, medicalConcern, HMP as hmp, classroomBehavior as behavior, workHabits as workEthic, DRA as dra, WTW as wtwBook, RAZ as raz, mathBenchmark as mathBench, Dibels as dibles, ELA as elaTotal, ExtendedELA as extendedEla, mathTotal, comments from takes natural join student natural join ydsd natural join section where section.sectionID = '"+sections[i]+"' and year = '"+year+"';" , 
 			  function(err, result2){
 			      if(err){return cb(err);}
 			      ret += '"students":[';
