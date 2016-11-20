@@ -54,6 +54,12 @@ function getGradesHelper(req,allGrades,l,count,toRet,cb){
 	getGrade(req,allGrades[count],function(results){
 		if(count+1 != l){
 		    toRet += results + ',';
+		    console.log("00000000000000000000000000000000@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		    console.log("count is: " + count + " and l is " + l);
+		}else if(count + 1 == l){
+		    toRet += results;
+		    console.log("-------- count is 1 less than l");
+		    console.log(toRet);
 		}
 		getGradesHelper(req,allGrades,l,count+1,toRet,cb);
 	    });
@@ -78,6 +84,7 @@ function getGrade(req,g,cb){
 				 console.log("**************** the return value from getSections for grade " + g + " was: ");
 				 console.log(sects);
 				 toRet += '{ "grade":' + g + ', "sections": [' + sects + ']}';  
+				 console.log("-----our toRet is now: " + toRet);
 				 cb(toRet); 
 			     });
 		     });

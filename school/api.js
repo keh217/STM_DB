@@ -47,26 +47,17 @@ router.get('/getGrades', function getGrades (req,res,next){
 	//   });
     });
 
-/*
-  res.writeHead(200, {'Content-Type': 'application/json'});
-  res.write('[{');
-  var allGrades = ['K','1','2','3','4','5','6','7','8'];
-  
-  for(var i=0;i<allGrades.length; i++){
-  var g = allGrades[i];
-  getModel().getGrade(req,g, function(err, sects){
-  if(err){return next(err);}
-  res.write('{');
-  res.write(JSON.stringify({grade:g}));
-		    res.write(JSON.stringify({sections:sects}));
-		    res.write('}');
-		});
-	}
-	console.log("RESPONSE ENDING!!!!!****");
-	res.end(']');
+router.get('/getGrade', function getGrade(req,res,next){
+	console.log('in get a single grade in api.js');
+	res.writeHead(200, {'Content-Type': 'application/json'});
+	var grd = req.query['grade'];
+	getModel().getGrade(req,grd,function(results){
+		console.log("results: " + results);
+		res.write(results);
+		res.end('');
+	    });
     });
-*/  
-
+    
 router.get('/prevkidsAndTeachers', function kidsAndTeachers (req, res, next) {
         console.log("in kidsAndTeachers");
         var grade = req.query['grade'];
